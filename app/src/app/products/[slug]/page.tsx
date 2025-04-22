@@ -1,16 +1,54 @@
+// import Image from "next/image";
+
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <div className="flex flex-col gap-[16px] items-center sm:items-start">
-          <h1 className="text-[32px] font-bold text-center sm:text-left">Laman produk /{slug}</h1>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+  const product = {
+    id: slug,
+    name: "Apple iPad (9th Generation)",
+    price: 99999900,
+    description:
+      "The Apple iPad (9th Generation) features a 10.2-inch Retina display, A13 Bionic chip, and support for Apple Pencil and Smart Keyboard.",
+    image: "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_UL320_.jpg",
+  };
 
-      </footer>
+  const formatPrice = (price: number) => {
+    const thousands = Math.floor(price / 1000);
+    const hundreds = price % 1000;
+    return (
+      <p className="text-lg flex items-start gap-1">
+        <span>Rp</span><span className="text-3xl font-semibold">{thousands.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span><span>{hundreds.toString().padStart(3, "0")}</span>
+      </p>
+    );
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8 font-sans">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div className="">
+          <img
+            src={product.image}
+            alt="SanDisk 128GB Extreme microSDXC"
+            width={500}
+            height={500}
+            className="object-contain mx-auto"
+          />
+        </div>
+
+        <div>
+          <h1 className="text-2xl md:text-3xl font-medium text-gray-900 mb-2">
+            {product.name}
+          </h1>
+          {formatPrice(product.price)}
+          <ul className="list-disc pl-6 text-sm text-gray-800 space-y-1 mb-6 mt-3">
+            {product.description}
+          </ul>
+
+          <button className="btn btn-accent w-full text-base normal-case rounded-md shadow-md">
+            Wishlist
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

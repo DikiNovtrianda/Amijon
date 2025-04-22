@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Wishlist() {
   const wishlistItems = [
     {
@@ -61,7 +63,7 @@ export default function Wishlist() {
     const hundreds = price % 1000;
     return (
       <p className="text-lg flex items-start gap-1">
-        <span>Rp</span><span className="text-3xl font-semibold">{thousands.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</span><span>{hundreds.toString().padStart(3, "0")}</span>
+        <span>Rp</span><span className="text-3xl font-semibold">{thousands.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span><span>{hundreds.toString().padStart(3, "0")}</span>
       </p>
     );
   };
@@ -86,8 +88,8 @@ export default function Wishlist() {
               <h2 className="card-title">{item.name}</h2>
                 {formatPrice(item.price)}
               <div className="card-actions justify-start">
-                <button className="btn btn-primary">See details</button>
-                <button className="btn btn-accent">Remove</button>
+                <Link className="btn btn-primary" href={`/products/${item.id}`}>Detail product</Link>
+                <button className="btn btn-error">Remove</button>
               </div>
             </div>
           </div>

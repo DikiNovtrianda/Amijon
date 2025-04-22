@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Products() {
   const products = [
     {
@@ -67,7 +69,7 @@ export default function Products() {
     const hundreds = price % 1000;
     return (
       <p className="text-lg flex items-start gap-1">
-        <span>Rp</span><span className="text-3xl font-semibold">{thousands.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</span><span>{hundreds.toString().padStart(3, "0")}</span>
+        <span>Rp</span><span className="text-3xl font-semibold">{thousands.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span><span>{hundreds.toString().padStart(3, "0")}</span>
       </p>
     );
   };
@@ -117,7 +119,7 @@ export default function Products() {
                 <h2 className="card-title">{product.name}</h2>
                   {formatPrice(product.price)}
                 <div className="card-actions ">
-                  <button className="btn btn-primary">Add to Cart</button>
+                <Link className="btn btn-primary" href={`/products/${product.id}`}>See product</Link>
                 </div>
               </div>
             </div>
