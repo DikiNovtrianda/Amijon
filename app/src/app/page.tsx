@@ -5,10 +5,8 @@ export default function Home() {
         <div className="flex flex-col gap-[16px] items-center sm:items-start">
           <h1 className="text-[32px] font-bold text-center sm:text-left">Laman beranda</h1>
         </div>
+        <button className="btn btn-secondary">Tombol</button>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-
-      </footer>
     </div>
   );
 }

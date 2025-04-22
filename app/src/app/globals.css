@@ -1,8 +1,44 @@
 @import "tailwindcss";
+@plugin "daisyui";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+@plugin "daisyui/theme" {
+  name: "bumblebee";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
+  --color-base-100: oklch(98% 0 0);
+  --color-base-200: oklch(97% 0 0);
+  --color-base-300: oklch(92% 0 0);
+  --color-base-content: oklch(20% 0 0);
+  --color-primary: oklch(82% 0.189 84.429);
+  --color-primary-content: oklch(27% 0.077 45.635);
+  --color-secondary: oklch(85% 0.199 91.936);
+  --color-secondary-content: oklch(28% 0.066 53.813);
+  --color-accent: oklch(70% 0.191 22.216);
+  --color-accent-content: oklch(25% 0.092 26.042);
+  --color-neutral: oklch(26% 0 0);
+  --color-neutral-content: oklch(98% 0 0);
+  --color-info: oklch(62% 0.214 259.815);
+  --color-info-content: oklch(97% 0.014 254.604);
+  --color-success: oklch(69% 0.17 162.48);
+  --color-success-content: oklch(97% 0.021 166.113);
+  --color-warning: oklch(79% 0.184 86.047);
+  --color-warning-content: oklch(98% 0.026 102.212);
+  --color-error: oklch(64% 0.246 16.439);
+  --color-error-content: oklch(96% 0.015 12.422);
+  --radius-selector: 0rem;
+  --radius-field: 1rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
 }
 
 @theme inline {
@@ -20,7 +56,7 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  /* background: var(--background); */
+  /* color: var(--foreground); */
   font-family: Arial, Helvetica, sans-serif;
 }

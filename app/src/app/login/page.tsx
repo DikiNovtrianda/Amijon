@@ -1,19 +1,17 @@
 export default function Login() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <div className="flex flex-col items-center min-h-screen bg-gray-100">
+      <div className="bg-white p-12 rounded shadow-md w-full max-w-sm">
         <h1 className="text-2xl font-bold mb-4 text-gray-800">Sign-In</h1>
         <form className="flex flex-col gap-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email or mobile phone number
+              Username
             </label>
             <input
               type="email"
               id="email"
-              placeholder="Enter your email"
-              className="mt-1 p-2 border border-gray-300 rounded w-full text-gray-500"
+              className="mt-1 p-2 border border-gray-300 rounded w-full"
               required
             />
           </div>
@@ -24,14 +22,13 @@ export default function Login() {
             <input
               type="password"
               id="password"
-              placeholder="Enter your password"
-              className="mt-1 p-2 border border-gray-300 rounded w-full text-gray-500"
+              className="mt-1 p-2 border border-gray-300 rounded w-full"
               required
             />
           </div>
           <button
             type="submit"
-            className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 rounded w-full"
+            className="btn btn-primary"
           >
             Sign-In
           </button>
