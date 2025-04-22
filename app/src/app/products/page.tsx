@@ -76,7 +76,7 @@ export default function Products() {
     <div className="flex flex-col md:flex-row">
       <aside className="w-full md:w-1/6 p-4">
         <h2 className="text-lg font-bold mb-4">Categories</h2>
-        <ul className="menu bg-base-100 rounded-box">
+        <ul className="menu rounded-box">
           <li>
             <a href="#" className="hover:bg-primary hover:text-white">
               Category 1
@@ -95,7 +95,7 @@ export default function Products() {
         </ul>
       </aside>
 
-      <main className="flex-grow p-8 bg-base-100">
+      <main className="flex-grow p-8">
         <header className="mb-8">
           <h1 className="text-2xl font-bold">Product list</h1>
           <p className="text-sm text-gray-500">

@@ -9,13 +9,13 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="bumblebee">
       <body>
-        <header className="navbar bg-base-100 shadow-md">
+        <header className="navbar bg-base-100 shadow-md bg-neutral">
           <div className="flex-1 text-center">
-            <Link href="/" className="normal-case text-xl">
+            <Link href="/" className="normal-case text-xl text-white">
               Amijon
             </Link>
           </div>
-          <div className="flex-3">
+          <div className="flex-4">
             <div className="form-control">
               <input
                 type="text"
@@ -25,14 +25,14 @@ export default function RootLayout({
             </div>
           </div>
           <div className="flex-1 ml-auto">
-            <ul className="menu menu-horizontal px-1 w-full">
-              <li className="flex-1">
+            <ul className="menu menu-horizontal px-1 w-full text-white">
+              <li className="flex-1 items-center">
                 <Link href="/products">Products</Link>
               </li>
-              <li className="flex-1">
+              <li className="flex-1 items-center">
                 <Link href="/wishlist">Wishlist</Link>
               </li>
-              <li className="flex-1">
+              <li className="flex-1 items-center">
                 <Link href="/login">Login</Link>
               </li>
             </ul>
