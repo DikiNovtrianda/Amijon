@@ -2,6 +2,7 @@ import { z } from "zod";
 import { getDB } from "../config/mongodb";
 import { comparePassword, encryptPassword } from "../helpers/bcrypt";
 import { generateToken } from "../helpers/jwt";
+import CustomError from "../exceptions/CustomError";
 
 interface IUser {
   name: string
@@ -42,10 +43,10 @@ export default class UserModel {
     const users = this.getCollection()
     const user = await users.findOne({ username: payload.username })
     if (!user) {
-      throw new Error("User not found")
+      throw new CustomError("Invalid username", 401)
     }
     if (!comparePassword(payload.password, user.password)) {
-      throw new Error("Wrong password")
+      throw new CustomError("Invalid password", 401)
     }
     const token: string = generateToken({_id : user._id, username : user.username})
     return token;

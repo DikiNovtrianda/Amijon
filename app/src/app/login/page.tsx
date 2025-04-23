@@ -1,4 +1,40 @@
+"use client"
+
+import { useState } from "react";
+
+interface ILogin {
+  username: string;
+  password: string;
+}
+
 export default function Login() {
+  const [data, setData] = useState<ILogin>({
+    username: "",
+    password: "",
+  });
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      const result = await response.json();
+      console.log(result.message);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100">
       <div className="flex items-center justify-center w-full h-16 ">
@@ -6,16 +42,17 @@ export default function Login() {
       </div>
       <div className="bg-white p-12 rounded shadow-md w-full max-w-sm">
         <h1 className="text-2xl font-bold mb-4 text-gray-800">Sign-In</h1>
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handleLogin}>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Username
             </label>
             <input
-              type="email"
-              id="email"
+              type="username"
+              id="username"
               className="mt-1 p-2 border border-gray-300 rounded w-full"
-              required
+              value={data.username}
+              onChange={(e) => setData({ ...data, username: e.target.value })}
             />
           </div>
           <div>
@@ -26,7 +63,8 @@ export default function Login() {
               type="password"
               id="password"
               className="mt-1 p-2 border border-gray-300 rounded w-full"
-              required
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
             />
           </div>
           <button
