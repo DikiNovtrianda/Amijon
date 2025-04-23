@@ -1,7 +1,6 @@
 import { ObjectId } from "mongodb"
 import { getDB } from "../config/mongodb"
 
-
 interface IWishlist {
   userId: ObjectId
   productId: ObjectId
@@ -18,6 +17,6 @@ export default class WishlistModel {
   static async createWishlist(payload: IWishlist) {
     const collection = this.getCollection()
     await collection.insertOne(payload)
-    return "Success"
+    return "Success create wishlist"
   }
 }
