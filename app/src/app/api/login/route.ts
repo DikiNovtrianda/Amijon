@@ -1,7 +1,6 @@
 import CustomError from "@/db/exceptions/CustomError";
 import UserModel from "@/db/models/UserModel";
 import { NextRequest } from "next/server";
-import { ZodError } from "zod";
 
 
 interface ILogin {

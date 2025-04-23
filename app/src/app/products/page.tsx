@@ -88,26 +88,29 @@ export default function Products() {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {products.map((product) => (
-            <Link
+            <div
               key={product._id.toString()}
-              href={`/products/${product.slug}`}
               className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300"
             >
-            <figure>
-                <img
-                  src={product.thumbnail}
-                  alt={product.name}
-                  className="w-full h-80 object-cover"
-                />
+              <figure>
+                <Link href={`/products/${product.slug}`}>
+                  <img
+                    src={product.thumbnail}
+                    alt={product.name}
+                    className="w-full h-80 object-cover"
+                  />
+                </Link>
               </figure>
               <div className="card-body">
+                <Link href={`/products/${product.slug}`} className="hover:underline hover:text-warning">
                 <h2 className="card-title">{product.name}</h2>
-                  {formatPrice(product.price)}
+                </Link>
+                {formatPrice(product.price)}
                 <div className="card-actions ">
                 <Link className="btn btn-primary" href={`/products/${product.slug}`}>See product</Link>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </main>
