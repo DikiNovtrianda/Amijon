@@ -63,7 +63,7 @@ export default function Products() {
       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5zfLpWHVzBy9Hx-SCgYbFxu0BpKkE2TcYSw&s",
     },
   ];
-  
+
   const formatPrice = (price: number) => {
     const thousands = Math.floor(price / 1000);
     const hundreds = price % 1000;

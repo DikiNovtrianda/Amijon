@@ -1,13 +1,16 @@
 "use client"
 
 import { useState } from "react";
+import { actLogin } from "./action";
+import { useRouter } from "next/navigation";
 
-interface ILogin {
+export interface ILogin {
   username: string;
   password: string;
 }
 
 export default function Login() {
+  const router = useRouter();
   const [data, setData] = useState<ILogin>({
     username: "",
     password: "",
@@ -16,20 +19,12 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error("Login failed");
+      const response = await actLogin(data);
+      if (response.error) {
+        console.error("Registration failed.");
+        return;
       }
-
-      const result = await response.json();
-      console.log(result.message);
+      router.push("/");
     } catch (error) {
       console.error("Error:", error);
     }
