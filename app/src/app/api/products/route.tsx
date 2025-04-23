@@ -20,7 +20,7 @@ interface IProduct {
 
 export async function GET(request: NextRequest) {
   try {
-    const result: IProduct[] = await ProductModel.getAllProducts()
+    const result: IProduct[] = await ProductModel.getPagedProducts(1)    
     return Response.json(result, { status: 200 })
   } catch (error) {
     return Response.json({ message: "ISE" }, { status: 500 });

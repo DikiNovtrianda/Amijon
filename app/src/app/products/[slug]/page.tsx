@@ -3,6 +3,9 @@
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
+  console.log(slug, " --------- slug");
+  
+
   const product = {
     id: slug,
     name: "Apple iPad (9th Generation)",
