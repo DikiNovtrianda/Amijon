@@ -28,7 +28,7 @@ export default class UserModel {
     return db.collection<IUser>("users")
   }
 
-  static async registerUser(payload: IUser) {
+  static async registerUser(payload: IUser) : Promise<string> {
     userSchema.parse(payload)
     const users = this.getCollection()
     await users.insertOne({
@@ -38,7 +38,7 @@ export default class UserModel {
     return "Register success!"
   }
 
-  static async userLogin(payload: ILogin) {
+  static async loginUser(payload: ILogin) : Promise<string> {
     const users = this.getCollection()
     const user = await users.findOne({ username: payload.username })
     if (!user) {
