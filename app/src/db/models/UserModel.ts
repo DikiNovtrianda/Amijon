@@ -1,17 +1,18 @@
 import { z } from "zod";
 import { getDB } from "../config/mongodb";
-import { encryptPassword } from "../helpers/bcrypt";
+import { comparePassword, encryptPassword } from "../helpers/bcrypt";
+import { generateToken } from "../helpers/jwt";
 
 interface IUser {
-  name: string;
-  email: string;
-  password: string;
-  username: string;
+  name: string
+  email: string
+  password: string
+  username: string
 }
 
 interface ILogin {
-  username: string;
-  password: string;
+  username: string
+  password: string
 }
 
 const userSchema = z.object({
@@ -30,10 +31,23 @@ export default class UserModel {
   static async registerUser(payload: IUser) {
     userSchema.parse(payload)
     const users = this.getCollection()
-    users.insertOne({
+    await users.insertOne({
       ...payload,
       password: encryptPassword(payload.password),
     })
     return "Register success!"
+  }
+
+  static async userLogin(payload: ILogin) {
+    const users = this.getCollection()
+    const user = await users.findOne({ username: payload.username })
+    if (!user) {
+      throw new Error("User not found")
+    }
+    if (!comparePassword(payload.password, user.password)) {
+      throw new Error("Wrong password")
+    }
+    const token: string = generateToken({_id : user._id, username : user.username})
+    return token;
   }
 }
