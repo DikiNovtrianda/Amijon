@@ -1,18 +1,53 @@
+"use client";
+
+import React, { useState } from "react";
+import { actRegister } from "./action";
+
+export interface IRegister {
+  name: string;
+  email: string;
+  password: string;
+  username: string;
+}
+
 export default function Register() {
+  const [data, setData] = useState<IRegister>({
+    name: "",
+    email: "",
+    password: "",
+    username: ""
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await actRegister(data);
+      if (response.error) {
+        console.error("Registration failed.");
+        return;
+      }
+      console.log(response.message);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100">
       <div className="bg-white p-12 rounded shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Create account</h1>
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name" className="block text-sm font-medium">
               Name <span className="text-xs text-gray-500">*optional</span>
             </label>
             <input
               type="text"
+              name="name"
               id="name"
               className="mt-1 p-2 border border-gray-300 rounded w-full"
-              required
+              value={data.name}
+              onChange={(e) => setData({ ...data, name: e.target.value })}
             />
           </div>
           <div>
@@ -21,9 +56,11 @@ export default function Register() {
             </label>
             <input
               type="text"
+              name="username"
               id="name"
               className="mt-1 p-2 border border-gray-300 rounded w-full"
-              required
+              value={data.username}
+              onChange={(e) => setData({ ...data, username: e.target.value })}
             />
           </div>
           <div>
@@ -32,9 +69,11 @@ export default function Register() {
             </label>
             <input
               type="email"
+              name="email"
               id="email"
               className="mt-1 p-2 border border-gray-300 rounded w-full"
-              required
+              value={data.email}
+              onChange={(e) => setData({ ...data, email: e.target.value })}
             />
           </div>
           <div>
@@ -43,9 +82,11 @@ export default function Register() {
             </label>
             <input
               type="password"
+              name="password"
               id="password"
               className="mt-1 p-2 border border-gray-300 rounded w-full"
-              required
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
             />
             <p className="text-xs text-gray-500 mt-1">
               Passwords must be at least 5 characters.
