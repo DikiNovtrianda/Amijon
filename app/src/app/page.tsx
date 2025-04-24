@@ -197,7 +197,7 @@ export default function Home() {
                       </div>
                     </div>
                   ))}
-                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -206,14 +206,14 @@ export default function Home() {
         <div className="card bg-white mt-6">
           <div className="card-body">
             <h2 className="card-title">Featured Products</h2>
-              <div 
+            <div 
               className="grid grid-flow-col auto-cols-max gap-4 overflow-x-auto"
               style={{
                 display: "flex",
                 overflowX: "auto",
                 paddingBottom: "1rem",
               }}
-              >
+            >
               {products.map((item) => (
                 <div key={item.id} className="card bg-base-100 shadow-md bg-white flex-shrink-0 w-60">
                   <figure>
@@ -227,11 +227,68 @@ export default function Home() {
                     <h2 className="card-title text-md p-4">{item.name}</h2>
                   </div>
                 </div>
-                ))}
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-neutral text-white mt-8">
+        <div className="container mx-auto py-8">
+          {/* Footer Links */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div>
+              <h3 className="font-bold mb-4">Get to Know Us</h3>
+              <ul className="space-y-2">
+                <li><a href="#" className="hover:underline">About Us</a></li>
+                <li><a href="#" className="hover:underline">Careers</a></li>
+                <li><a href="#" className="hover:underline">Press Releases</a></li>
+                <li><a href="#" className="hover:underline">Amazon Science</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Make Money with Us</h3>
+              <ul className="space-y-2">
+                <li><a href="#" className="hover:underline">Sell on Amazon</a></li>
+                <li><a href="#" className="hover:underline">Sell under Amazon Accelerator</a></li>
+                <li><a href="#" className="hover:underline">Amazon Global Selling</a></li>
+                <li><a href="#" className="hover:underline">Become an Affiliate</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Amazon Payment Products</h3>
+              <ul className="space-y-2">
+                <li><a href="#" className="hover:underline">Amazon Business Card</a></li>
+                <li><a href="#" className="hover:underline">Shop with Points</a></li>
+                <li><a href="#" className="hover:underline">Reload Your Balance</a></li>
+                <li><a href="#" className="hover:underline">Amazon Currency Converter</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Let Us Help You</h3>
+              <ul className="space-y-2">
+                <li><a href="#" className="hover:underline">Your Account</a></li>
+                <li><a href="#" className="hover:underline">Returns Centre</a></li>
+                <li><a href="#" className="hover:underline">100% Purchase Protection</a></li>
+                <li><a href="#" className="hover:underline">Help</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Footer Bottom */}
+          <div className="border-t border-gray-700 mt-8 pt-4">
+            <div className="flex flex-col sm:flex-row justify-between items-center">
+              <div className="text-sm">
+                © 2025, amijon.com, Inc. or its affiliates
+              </div>
+              <div className="flex space-x-4 mt-4 sm:mt-0">
+                <a href="#" className="hover:underline">Privacy Notice</a>
+                <a href="#" className="hover:underline">Conditions of Use</a>
+                <a href="#" className="hover:underline">Interest-Based Ads</a>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   );
 }
