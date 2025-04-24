@@ -8,12 +8,17 @@ export default function Home() {
     {
       id: 2,
       name: "Samsung Galaxy Tab S7",
-      image: "https://m.media-amazon.com/images/I/81Mf3EC3wUL._AC_UL320_.jpg",
+      image: "https://radarlambar.bacakoran.co/upload/9ba773bc83607854c3cf7d3f5a0f60c0.jpeg",
     },
     {
       id: 3,
       name: "Microsoft Surface Pro 7",
-      image: "https://m.media-amazon.com/images/I/71QmFalQpZL._AC_UL320_.jpg",
+      image: "https://radarlambar.bacakoran.co/upload/9ba773bc83607854c3cf7d3f5a0f60c0.jpeg",
+    },
+    {
+      id: 4,
+      name: "Microsoft Surface Pro 7",
+      image: "https://radarlambar.bacakoran.co/upload/9ba773bc83607854c3cf7d3f5a0f60c0.jpeg",
     },
   ];
 
@@ -93,29 +98,140 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-base-100">
       {/* Product Grid */}
-      <div className="container mx-auto p-8">
-        <h1 className="text-3xl font-bold mb-6">Top Products</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <div key={product.id} className="card bg-base-100 shadow-md">
-              <figure>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-60 object-cover"
-                />
-              </figure>
+      <div className="container mx-auto">
+        <div 
+          className="p-8"
+          style={{
+            backgroundImage: `
+              linear-gradient(to bottom, rgba(0, 0, 0, 0) 60%, rgba(248, 248, 248, 255) 80%), 
+              url('https://m.media-amazon.com/images/I/61A-FJoXloL._SX3000_.jpg')
+            `,
+            backgroundSize: "cover", 
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat", 
+          }}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-60">
+            {/* featured products */}
+            <div className="card bg-white shadow-md">
               <div className="card-body">
-                <h2 className="card-title">{product.name}</h2>
-                  {formatPrice(product.price)}
-                <div className="card-actions justify-end">
-                  <button className="btn btn-primary">Add to Cart</button>
-                </div>
+                <h2 className="card-title">Featured Products</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {featuredItems.map((item) => (
+                    <div key={item.id} className="card bg-base-100 shadow-md bg-white">
+                      <figure>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-30 object-contain"
+                        />
+                      </figure>
+                      <div className="card-body p-0">
+                        <h2 className="card-title text-xs p-0">{item.name}</h2>
+                      </div>
+                    </div>
+                  ))}
+                  </div>
               </div>
             </div>
-          ))}
+            {/* featured products */}
+            <div className="card bg-white shadow-md">
+              <div className="card-body">
+                <h2 className="card-title">Featured Products</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {featuredItems.map((item) => (
+                    <div key={item.id} className="card bg-base-100 shadow-md bg-white">
+                      <figure>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-30 object-contain"
+                        />
+                      </figure>
+                      <div className="card-body p-0">
+                        <h2 className="card-title text-xs p-0">{item.name}</h2>
+                      </div>
+                    </div>
+                  ))}
+                  </div>
+              </div>
+            </div>
+            {/* featured products */}
+            <div className="card bg-white shadow-md">
+              <div className="card-body">
+                <h2 className="card-title">Featured Products</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {featuredItems.map((item) => (
+                    <div key={item.id} className="card bg-base-100 shadow-md bg-white">
+                      <figure>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-30 object-contain"
+                        />
+                      </figure>
+                      <div className="card-body p-0">
+                        <h2 className="card-title text-xs p-0">{item.name}</h2>
+                      </div>
+                    </div>
+                  ))}
+                  </div>
+              </div>
+            </div>
+            {/* featured products */}
+            <div className="card bg-white shadow-md">
+              <div className="card-body">
+                <h2 className="card-title">Featured Products</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {featuredItems.map((item) => (
+                    <div key={item.id} className="card bg-base-100 shadow-md bg-white">
+                      <figure>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-30 object-contain"
+                        />
+                      </figure>
+                      <div className="card-body p-0">
+                        <h2 className="card-title text-xs p-0">{item.name}</h2>
+                      </div>
+                    </div>
+                  ))}
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* featured products */}
+        <div className="card bg-white mt-6">
+          <div className="card-body">
+            <h2 className="card-title">Featured Products</h2>
+              <div 
+              className="grid grid-flow-col auto-cols-max gap-4 overflow-x-auto"
+              style={{
+                display: "flex",
+                overflowX: "auto",
+                paddingBottom: "1rem",
+              }}
+              >
+              {products.map((item) => (
+                <div key={item.id} className="card bg-base-100 shadow-md bg-white flex-shrink-0 w-60">
+                  <figure>
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-full h-40 object-contain"
+                    />
+                  </figure>
+                  <div className="card-body p-0">
+                    <h2 className="card-title text-md p-4">{item.name}</h2>
+                  </div>
+                </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
   );
 }

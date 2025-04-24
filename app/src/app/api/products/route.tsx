@@ -24,11 +24,12 @@ interface IProductWithWishlist extends IProduct {
 
 export async function GET(request: NextRequest) {
   try {
+	  const _id = request.headers.get("x-user-id");
+    const userId = _id ? new ObjectId(_id) : ""
     const { searchParams } = request.nextUrl
     const pageNumber = parseInt(searchParams.get("pageNumber") || "1", 10)
     const search = searchParams.get("search") || ""
-    // const result: IProductWithWishlist[] = await ProductModel.getPagedAggregatedProducts(new ObjectId("6808b069d888dcc822e9705a"), pageNumber, search)
-    const result: IProductWithWishlist[] = await ProductModel.getPagedAggregatedProducts('', pageNumber, search)
+    const result: IProductWithWishlist[] = await ProductModel.getPagedAggregatedProducts(userId, pageNumber, search)
     if (result.length === 0) {
       return Response.json({ message: "No products found" }, { status: 404 })
     }

@@ -43,7 +43,9 @@ export default function RootLayout({
 
   useEffect(() => {
     const query = searchParams.get("search") || ""
-    setSearch(query)
+    if (query) {
+      setSearch(query)
+    }
   }, [searchParams])
 
   return (

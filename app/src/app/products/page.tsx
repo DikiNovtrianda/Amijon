@@ -20,6 +20,7 @@ interface IProduct {
   images: string[]
   createdAt: Date
   updatedAt: Date
+  isWishlist: boolean
 }
 
 interface IResponse {
@@ -50,7 +51,6 @@ export default function Products() {
         setHasMore(false);
         return
       }
-
       const data: IProduct[] = await resp.json();
 
       if (data.length === 0) {
@@ -94,12 +94,31 @@ export default function Products() {
       Swal.fire({
         title: "Wishlist added",
         icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      setProducts((prevProducts) => {
+        return prevProducts.map((product) => {
+          if (product._id.toString() === productId) {
+            return { ...product, isWishlist: true };
+          }
+          return product;
+        });
       });
     }
     catch (error) {
       console.error("Error adding to wishlist:", error)
     }
   };
+
+  const showWishlistButton = (product: IProduct) => {
+    if (!product.isWishlist) {
+      return <button className="btn btn-neutral" onClick={() => addWishlist(product._id.toString())}>Wishlist</button>
+    } else {
+      return <button className="btn btn-accent">Wishlisted</button>
+    }
+    
+  }
 
   useEffect(() => {
     setProducts([])
@@ -175,14 +194,12 @@ export default function Products() {
                   </figure>
                   <div className="card-body">
                     <Link href={`/products/${product.slug}`} className="hover:underline hover:text-warning">
-                    <h2 className="card-title">{product.name}</h2>
+                      <h2 className="card-title">{product.name}</h2>
                     </Link>
                     {formatPrice(product.price)}
                     <div className="card-actions ">
                     <Link className="btn btn-primary" href={`/products/${product.slug}`}>See product</Link>
-                    {/* call wishlist post later on */}
-                    <button className="btn btn-neutral" onClick={() => addWishlist(product._id.toString())}>Wishlist</button>
-                    {/* <Link className="btn btn-accent" href={`/products/${product.slug}`}>Wishlisted</Link> */}
+                    {showWishlistButton(product)}
                     </div>
                   </div>
                 </div>

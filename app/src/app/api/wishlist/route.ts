@@ -11,8 +11,11 @@ interface IWishlist {
 
 export async function POST(request: NextRequest) {
   try {
+	  const _id = request.headers.get("x-user-id");
+    const userId = _id ? new ObjectId(_id) : ""
+    console.log(userId);
     const body: IWishlist = await request.json()
-    const { userId, productId } = body
+    const { productId } = body
     const message = WishlistModel.createWishlist({
       userId: new ObjectId(userId),
       productId: new ObjectId(productId),
