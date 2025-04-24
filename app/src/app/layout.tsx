@@ -1,11 +1,25 @@
+"use client"
+
+import { useState } from "react";
 import "./globals.css";
 import Link from 'next/link'
+import { useRouter } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [search, setSearch] = useState<string>("");
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (search.trim()) {
+      router.push(`/products?search=${encodeURIComponent(search)}`);
+    }
+  };
+
   return (
     <html lang="en" data-theme="bumblebee">
       <body>
@@ -16,13 +30,15 @@ export default function RootLayout({
             </Link>
           </div>
           <div className="flex-4">
-            <div className="form-control">
+            <form className="form-control" onSubmit={handleSearch}>
               <input
                 type="text"
                 placeholder="Search Amijon"
                 className="input input-bordered w-full"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
-            </div>
+            </form>
           </div>
           <div className="flex-1 ml-auto">
             <ul className="menu menu-horizontal px-1 w-full text-white">

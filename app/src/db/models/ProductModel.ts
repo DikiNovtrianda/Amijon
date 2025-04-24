@@ -26,10 +26,11 @@ export default class ProductModel {
     return await products.find().toArray()
   }
 
-  static async getPagedProducts(page: number): Promise<IProduct[]> {
+  static async getPagedProducts(page: number = 1, search: string): Promise<IProduct[]> {
     const products = this.getCollection()
     const skip = (page - 1) * 10
-    return await products.find().skip(skip).limit(10).toArray()
+    const query = search ? { name: { $regex: search, $options: "i" } } : {}
+    return await products.find(query).skip(skip).limit(10).toArray()
   }
 
   static async getProductBySlug(slug: string): Promise<IProduct | null> {

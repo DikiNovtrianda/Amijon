@@ -2,6 +2,7 @@
 
 import { ObjectId } from "mongodb";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface IProduct {
@@ -20,6 +21,10 @@ interface IProduct {
 
 export default function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || ""
 
   const fetchProducts = async () => {
     try {
@@ -29,6 +34,7 @@ export default function Products() {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ pageNumber: 1, search: "" }),
       })
   
       if (!resp.ok) {
@@ -38,22 +44,33 @@ export default function Products() {
       setProducts(data);
     } catch (error) {
       console.log("Error fetching products:", error);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [search]);
 
   const formatPrice = (price: number) => {
     const thousands = Math.floor(price / 1000);
     const hundreds = price % 1000;
     return (
       <p className="text-lg flex items-start gap-1">
-        <span>Rp</span><span className="text-3xl font-semibold">{thousands.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span><span>{hundreds.toString().padStart(3, "0")}</span>
+        <span>Rp</span>
+        <span className="text-3xl font-semibold">{thousands.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+        <span>{hundreds.toString().padStart(3, "0")}</span>
       </p>
     );
   };
+
+  if (loading) {
+    return <p className="text-center">Loading...</p>;
+  }
+  if (products.length === 0) {
+    return <p className="text-center">No products found</p>;
+  }
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -92,7 +109,7 @@ export default function Products() {
               key={product._id.toString()}
               className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300"
             >
-              <figure>
+              <figure className="bg-white">
                 <Link href={`/products/${product.slug}`}>
                   <img
                     src={product.thumbnail}
@@ -108,6 +125,9 @@ export default function Products() {
                 {formatPrice(product.price)}
                 <div className="card-actions ">
                 <Link className="btn btn-primary" href={`/products/${product.slug}`}>See product</Link>
+                {/* call wishlist post later on */}
+                <Link className="btn btn-neutral" href={`/products/${product.slug}`}>Wishlist</Link>
+                {/* <Link className="btn btn-accent" href={`/products/${product.slug}`}>Wishlisted</Link> */}
                 </div>
               </div>
             </div>

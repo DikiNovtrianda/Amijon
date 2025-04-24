@@ -20,7 +20,13 @@ interface IProduct {
 
 export async function GET(request: NextRequest) {
   try {
-    const result: IProduct[] = await ProductModel.getPagedProducts(1)    
+    const { searchParams } = request.nextUrl
+    const pageNumber = parseInt(searchParams.get("pageNumber") || "1", 10)
+    const search = searchParams.get("search") || ""
+    const result: IProduct[] = await ProductModel.getPagedProducts(pageNumber, search)
+    if (result.length === 0) {
+      return Response.json({ message: "No products found" }, { status: 404 })
+    }
     return Response.json(result, { status: 200 })
   } catch (error) {
     return Response.json({ message: "ISE" }, { status: 500 });
