@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./globals.css";
 import Link from 'next/link'
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function RootLayout({
   children,
@@ -11,14 +11,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [search, setSearch] = useState<string>("");
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (search.trim()) {
       router.push(`/products?search=${encodeURIComponent(search)}`);
+    } else {
+      router.push(`/products`);
     }
-  };
+  }
+
+  useEffect(() => {
+    // Set the search bar value from the query parameter (if it exists)
+    const query = searchParams.get("search") || "";
+    setSearch(query)
+  }, [searchParams])
 
   return (
     <html lang="en" data-theme="bumblebee">

@@ -28,9 +28,9 @@ export default class ProductModel {
 
   static async getPagedProducts(page: number = 1, search: string): Promise<IProduct[]> {
     const products = this.getCollection()
-    const skip = (page - 1) * 10
+    const skip = (page - 1) * 20
     const query = search ? { name: { $regex: search, $options: "i" } } : {}
-    return await products.find(query).skip(skip).limit(10).toArray()
+    return await products.find(query).skip(skip).limit(20).toArray()
   }
 
   static async getProductBySlug(slug: string): Promise<IProduct | null> {

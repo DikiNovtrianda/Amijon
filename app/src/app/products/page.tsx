@@ -4,6 +4,8 @@ import { ObjectId } from "mongodb";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { set } from "zod";
 
 interface IProduct {
   _id: ObjectId
@@ -21,14 +23,16 @@ interface IProduct {
 
 export default function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [error, setError] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || ""
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (page: number) => {
     try {
-      const url: string = process.env.NEXT_PUBLIC_API_URL + `/products?pageNumber=${pageNumber}&search=${encodeURIComponent(search)}`
+      setError(null); 
+      const url: string = process.env.NEXT_PUBLIC_API_URL + `/products?pageNumber=${page}&search=${encodeURIComponent(search)}`
       const resp = await fetch(url, {
         method: "GET",
         headers: {
@@ -36,22 +40,28 @@ export default function Products() {
         },
       })
       if (!resp.ok) {
-        setProducts([]);
-        setLoading(false);
-        return { error: true, message: "Failed to fetch products" };
+        setError("Failed to fetch products. Please try again later.");
+        setHasMore(false);
+        return
       }
+
       const data: IProduct[] = await resp.json();
-      setProducts(data);
+
+      if (data.length === 0) {
+        setHasMore(false);
+      } else {
+        setProducts((prevProducts) => {
+          const existingIds = new Set(prevProducts.map((product) => product._id.toString()));
+          const uniqueProducts = data.filter((product) => !existingIds.has(product._id.toString()));
+          return [...prevProducts, ...uniqueProducts];
+        });  
+      }
     } catch (error) {
-      console.log("Error fetching products:", error);
-    } finally {
-      setLoading(false);
+      console.error("Error fetching products:", error);
+      setHasMore(false);
+      setError("Failed to fetch products. Please try again later.");
     }
   }
-
-  useEffect(() => {
-    fetchProducts();
-  }, [search]);
 
   const formatPrice = (price: number) => {
     const thousands = Math.floor(price / 1000);
@@ -65,11 +75,25 @@ export default function Products() {
     );
   };
 
-  if (loading) {
-    return <p className="text-center">Loading...</p>;
-  }
-  if (products.length === 0) {
-    return <p className="text-center">No products found</p>;
+  useEffect(() => {
+    setProducts([]); 
+    setPageNumber(1); 
+    setHasMore(true);
+    fetchProducts(1);
+  }, [search]);
+
+  const fetchMoreData = () => {
+    const nextPage = pageNumber + 1;
+    setPageNumber(nextPage);
+    fetchProducts(nextPage);
+  };
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg">Products not found!</p>
+      </div>
+    );
   }
 
   return (
@@ -103,36 +127,44 @@ export default function Products() {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {products.map((product) => (
-            <div
-              key={product._id.toString()}
-              className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300"
-            >
-              <figure className="bg-white">
-                <Link href={`/products/${product.slug}`}>
-                  <img
-                    src={product.thumbnail}
-                    alt={product.name}
-                    className="w-full h-80 object-cover"
-                  />
-                </Link>
-              </figure>
-              <div className="card-body">
-                <Link href={`/products/${product.slug}`} className="hover:underline hover:text-warning">
-                <h2 className="card-title">{product.name}</h2>
-                </Link>
-                {formatPrice(product.price)}
-                <div className="card-actions ">
-                <Link className="btn btn-primary" href={`/products/${product.slug}`}>See product</Link>
-                {/* call wishlist post later on */}
-                <Link className="btn btn-neutral" href={`/products/${product.slug}`}>Wishlist</Link>
-                {/* <Link className="btn btn-accent" href={`/products/${product.slug}`}>Wishlisted</Link> */}
+          <InfiniteScroll
+            dataLength={products.length} 
+            next={fetchMoreData} 
+            hasMore={hasMore} 
+            loader={<h4 className="mt-5">Loading...</h4>} 
+            endMessage={<p className="text-center mt-5">No more products to show</p>} 
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              {products.map((product) => (
+                <div
+                  key={product._id.toString()}
+                  className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300"
+                >
+                  <figure className="bg-white">
+                    <Link href={`/products/${product.slug}`}>
+                      <img
+                        src={product.thumbnail}
+                        alt={product.name}
+                        className="w-full h-80 object-cover"
+                      />
+                    </Link>
+                  </figure>
+                  <div className="card-body">
+                    <Link href={`/products/${product.slug}`} className="hover:underline hover:text-warning">
+                    <h2 className="card-title">{product.name}</h2>
+                    </Link>
+                    {formatPrice(product.price)}
+                    <div className="card-actions ">
+                    <Link className="btn btn-primary" href={`/products/${product.slug}`}>See product</Link>
+                    {/* call wishlist post later on */}
+                    <Link className="btn btn-neutral" href={`/products/${product.slug}`}>Wishlist</Link>
+                    {/* <Link className="btn btn-accent" href={`/products/${product.slug}`}>Wishlisted</Link> */}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </InfiniteScroll>
       </main>
     </div>
   );
