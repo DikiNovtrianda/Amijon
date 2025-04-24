@@ -11,6 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [search, setSearch] = useState<string>("");
+  const [debouncedSearch, setDebouncedSearch] = useState<string>(""); // State for the debounced search
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -24,8 +25,24 @@ export default function RootLayout({
   }
 
   useEffect(() => {
-    // Set the search bar value from the query parameter (if it exists)
-    const query = searchParams.get("search") || "";
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search)
+    }, 1000)
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [search])
+
+  useEffect(() => {
+    if (debouncedSearch.trim()) {
+      router.push(`/products?search=${encodeURIComponent(debouncedSearch)}`)
+    } else {
+      router.push(`/products`)
+    }
+  }, [debouncedSearch, router])
+
+  useEffect(() => {
+    const query = searchParams.get("search") || ""
     setSearch(query)
   }, [searchParams])
 

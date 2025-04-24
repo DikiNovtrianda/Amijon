@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb"
 import { getDB } from "../config/mongodb"
+import { getWishlistOnProductAgg } from "../helpers/aggregation"
 
 interface IProduct {
   _id: ObjectId
@@ -15,6 +16,10 @@ interface IProduct {
   updatedAt: Date
 }
 
+interface IProductWithWishlist extends IProduct {
+  isWishlisted: boolean
+}
+
 export default class ProductModel {
   static getCollection() {
     const db = getDB()
@@ -26,11 +31,41 @@ export default class ProductModel {
     return await products.find().toArray()
   }
 
+  static async getAllProductsWithWishlist(userId: ObjectId): Promise<IProductWithWishlist[]> {
+    const products = this.getCollection()
+    return await products.aggregate<IProductWithWishlist>(getWishlistOnProductAgg(userId)).toArray()
+  }
+
   static async getPagedProducts(page: number = 1, search: string): Promise<IProduct[]> {
     const products = this.getCollection()
     const skip = (page - 1) * 20
-    const query = search ? { name: { $regex: search, $options: "i" } } : {}
-    return await products.find(query).skip(skip).limit(20).toArray()
+    const pipeline = [
+      {
+        $match: search
+          ? { name: { $regex: search, $options: "i" } } 
+          : {}, 
+      },
+      { $skip: skip },
+      { $limit: 20 },
+    ]
+    return await products.aggregate<IProduct>(pipeline).toArray()
+  }
+
+  static async getPagedAggregatedProducts(userId: ObjectId | string, page: number = 1, search: string): Promise<IProductWithWishlist[]> {
+    const products = this.getCollection()
+    const limit = 20
+    const skip = (page - 1) * limit
+    const pipeline = [
+      ...getWishlistOnProductAgg(userId), 
+      {
+        $match: search
+          ? { name: { $regex: search, $options: "i" } } 
+          : {}, 
+      },
+      { $skip: skip },
+      { $limit: 20 },
+    ];
+    return await products.aggregate<IProductWithWishlist>(pipeline).toArray()
   }
 
   static async getProductBySlug(slug: string): Promise<IProduct | null> {

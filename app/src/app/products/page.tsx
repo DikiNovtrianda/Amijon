@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { set } from "zod";
+import Swal from "sweetalert2";
+import { actWishlist } from "./action";
 
 interface IProduct {
   _id: ObjectId
@@ -21,11 +22,16 @@ interface IProduct {
   updatedAt: Date
 }
 
+interface IResponse {
+  error: boolean
+  message: string
+}
+
 export default function Products() {
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const [error, setError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [products, setProducts] = useState<IProduct[]>([])
+  const [pageNumber, setPageNumber] = useState<number>(1)
+  const [error, setError] = useState<string | null>(null)
+  const [hasMore, setHasMore] = useState<boolean>(true)
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || ""
 
@@ -64,8 +70,8 @@ export default function Products() {
   }
 
   const formatPrice = (price: number) => {
-    const thousands = Math.floor(price / 1000);
-    const hundreds = price % 1000;
+    const thousands: number = Math.floor(price / 1000);
+    const hundreds: number = price % 1000;
     return (
       <p className="text-lg flex items-start gap-1">
         <span>Rp</span>
@@ -75,18 +81,38 @@ export default function Products() {
     );
   };
 
+  const addWishlist = async (productId: string) => {
+    try {
+      let resp: IResponse = await actWishlist(productId)
+      if (resp.error) {
+        Swal.fire({
+          title: "Error",
+          icon: "error",
+        });
+        return;
+      }
+      Swal.fire({
+        title: "Wishlist added",
+        icon: "success",
+      });
+    }
+    catch (error) {
+      console.error("Error adding to wishlist:", error)
+    }
+  };
+
   useEffect(() => {
-    setProducts([]); 
-    setPageNumber(1); 
-    setHasMore(true);
-    fetchProducts(1);
-  }, [search]);
+    setProducts([])
+    setPageNumber(1) 
+    setHasMore(true)
+    fetchProducts(1)
+  }, [search])
 
   const fetchMoreData = () => {
-    const nextPage = pageNumber + 1;
-    setPageNumber(nextPage);
-    fetchProducts(nextPage);
-  };
+    const nextPage: number = pageNumber + 1
+    setPageNumber(nextPage)
+    fetchProducts(nextPage)
+  }
 
   if (error) {
     return (
@@ -118,7 +144,6 @@ export default function Products() {
           </li>
         </ul>
       </aside>
-
       <main className="flex-grow p-8">
         <header className="mb-8">
           <h1 className="text-2xl font-bold">Product list</h1>
@@ -126,7 +151,6 @@ export default function Products() {
             Check each product page for other buying options.
           </p>
         </header>
-
           <InfiniteScroll
             dataLength={products.length} 
             next={fetchMoreData} 
@@ -157,7 +181,7 @@ export default function Products() {
                     <div className="card-actions ">
                     <Link className="btn btn-primary" href={`/products/${product.slug}`}>See product</Link>
                     {/* call wishlist post later on */}
-                    <Link className="btn btn-neutral" href={`/products/${product.slug}`}>Wishlist</Link>
+                    <button className="btn btn-neutral" onClick={() => addWishlist(product._id.toString())}>Wishlist</button>
                     {/* <Link className="btn btn-accent" href={`/products/${product.slug}`}>Wishlisted</Link> */}
                     </div>
                   </div>
