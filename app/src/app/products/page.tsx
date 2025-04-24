@@ -28,16 +28,16 @@ export default function Products() {
 
   const fetchProducts = async () => {
     try {
-      const url: string = process.env.NEXT_PUBLIC_API_URL + "/products"
+      const url: string = process.env.NEXT_PUBLIC_API_URL + `/products?pageNumber=${pageNumber}&search=${encodeURIComponent(search)}`
       const resp = await fetch(url, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ pageNumber: 1, search: "" }),
       })
-  
       if (!resp.ok) {
+        setProducts([]);
+        setLoading(false);
         return { error: true, message: "Failed to fetch products" };
       }
       const data: IProduct[] = await resp.json();
