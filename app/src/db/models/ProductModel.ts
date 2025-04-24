@@ -68,6 +68,15 @@ export default class ProductModel {
     return await products.aggregate<IProductWithWishlist>(pipeline).toArray()
   }
 
+  static async getRandomProducts(): Promise<IProduct[]> {
+    const limit = 10
+    const products = this.getCollection()
+    return await products.aggregate<IProduct>([
+      { $match: { $expr: { $gte: [ { $rand: {} }, 0.5 ] } } }, 
+      { $sample: { size: limit } }
+    ]).toArray()
+  }
+
   static async getProductBySlug(slug: string): Promise<IProduct | null> {
     const products = this.getCollection()
     return await products.findOne({ slug })

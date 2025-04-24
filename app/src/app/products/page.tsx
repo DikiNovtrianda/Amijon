@@ -117,7 +117,6 @@ export default function Products() {
     } else {
       return <button className="btn btn-accent">Wishlisted</button>
     }
-    
   }
 
   useEffect(() => {
