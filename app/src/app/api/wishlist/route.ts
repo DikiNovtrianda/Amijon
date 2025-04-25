@@ -29,3 +29,16 @@ export async function POST(request: NextRequest) {
   }
 }
 
+export async function GET(request: NextRequest) {
+  try {
+    const _id = request.headers.get("x-user-id");
+    const userId = _id ? new ObjectId(_id) : ""
+    const wishlist = await WishlistModel.getWishlistByUserId(new ObjectId(userId))
+    return Response.json({ wishlist }, { status: 200 })
+  } catch (error) {
+    console.log(error);
+    return Response.json({ message: "ISE" }, { status: 500 });
+  }
+}
+
+
