@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { ILogin } from "./page";
 
 export async function actLogin(payload: ILogin) {
-  const url: string = process.env.API_URL + "/login";
+  const url: string = process.env.NEXT_PUBLIC_API_URL + "/login";
   const resp = await fetch(url, {
     method: "POST",
     headers: {

@@ -1,6 +1,7 @@
 "use server"
 
 import { ObjectId } from "mongodb";
+import Image from "next/image";
 
 interface IProduct {
   _id: ObjectId;
@@ -58,7 +59,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     <div className="container mx-auto px-4 py-8 font-sans">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <div>
-          <img
+          <Image
             src={product.thumbnail}
             alt={product.name}
             width={500}

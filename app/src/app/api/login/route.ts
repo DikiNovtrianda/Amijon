@@ -12,6 +12,8 @@ export async function POST(request: NextRequest) {
   try {
       const body : ILogin = await request.json();
       const token: string = await UserModel.loginUser(body);
+      console.log('pass');
+      
       return Response.json({ token }, { status: 200 });
     } catch (err) {
       if (err instanceof CustomError) {

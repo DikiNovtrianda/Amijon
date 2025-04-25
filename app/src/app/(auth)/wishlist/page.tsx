@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Wishlist() {
@@ -72,13 +73,13 @@ export default function Wishlist() {
     <div className="min-h-screen bg-base-100 p-8">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Your Wishlist</h1>
-        <p className="text-gray-600">Items you've saved for later.</p>
+        <p className="text-gray-600">Items you&apos;ve saved for later.</p>
       </header>
       <main className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
         {wishlistItems.map((item) => (
           <div key={item.id} className="card bg-base-100 shadow-md">
             <figure>
-              <img
+              <Image
                 src={item.image}
                 alt={item.name}
                 className="w-full h-60 object-cover"

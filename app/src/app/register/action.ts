@@ -3,7 +3,7 @@
 import { IRegister } from "./page"
 
 export async function actRegister(payload: IRegister) {
-  const url: string = process.env.API_URL + "/register"
+  const url: string = process.env.NEXT_PUBLIC_API_URL + "/register"
   const resp = await fetch(url, {
     method: "POST",
     headers: {

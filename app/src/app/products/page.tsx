@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Swal from "sweetalert2";
 import { actWishlist } from "./action";
+import Image from "next/image";
 
 interface IProduct {
   _id: ObjectId
@@ -83,7 +84,7 @@ export default function Products() {
 
   const addWishlist = async (productId: string) => {
     try {
-      let resp: IResponse = await actWishlist(productId)
+      const resp: IResponse = await actWishlist(productId)
       if (resp.error) {
         Swal.fire({
           title: "Error",
@@ -184,7 +185,7 @@ export default function Products() {
                 >
                   <figure className="bg-white">
                     <Link href={`/products/${product.slug}`}>
-                      <img
+                      <Image
                         src={product.thumbnail}
                         alt={product.name}
                         className="w-full h-80 object-cover"

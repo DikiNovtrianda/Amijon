@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 export async function actWishlist(productId: string) {
-  const url: string = process.env.API_URL + "/wishlist"
+  const url: string = process.env.NEXT_PUBLIC_API_URL + "/wishlist"
 	const cookieStore = await cookies();
 	const token = cookieStore.get("access_token");
   const resp = await fetch(url, {
