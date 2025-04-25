@@ -10,7 +10,7 @@ export const getWishlistOnProductAgg = (userId: string | ObjectId) => {
         pipeline: [
           {
             $match: {
-              userId: userId
+              userId
             }
           }
         ],
@@ -35,5 +35,24 @@ export const getWishlistOnProductAgg = (userId: string | ObjectId) => {
       }
     },
     { $project: { wishlist: 0 } }
+  ]
+}
+
+export const getProductOnWIshlistAgg = (userId: string | ObjectId) => {
+  return [
+    {
+      $match: {
+        userId
+      }
+    },
+    {
+      $lookup: {
+        from: 'products',
+        localField: 'productId',
+        foreignField: '_id',
+        as: 'product'
+      }
+    },
+    { $unwind: { path: '$product' } }
   ]
 }

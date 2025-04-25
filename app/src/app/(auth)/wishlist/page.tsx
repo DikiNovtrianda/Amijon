@@ -1,62 +1,53 @@
+"use client"
+
+import { ObjectId } from "mongodb";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+interface IWishlist {
+  userId: ObjectId
+  productId: ObjectId
+  createdAt: string
+  updatedAt: string
+  product: IProduct
+}
+
+interface IProduct {
+  _id: ObjectId
+  name: string
+  slug: string
+  description: string
+  excerpt: string
+  price: number
+  tags: string[]
+  thumbnail: string
+  images: string[]
+  createdAt: Date
+  updatedAt: Date
+}
+
 
 export default function Wishlist() {
-  const wishlistItems = [
-    {
-      id: 1,
-      name: "Apple iPad (9th Generation)",
-      price: 33000000,
-      image: "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_UL320_.jpg",
-    },
-    {
-      id: 2,
-      name: "Samsung Galaxy Tab S7",
-      price: 4999000,
-      image: "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_UL320_.jpg",
-    },
-    {
-      id: 3,
-      name: "Microsoft Surface Pro 7",
-      price: 74999900,
-      image: "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_UL320_.jpg",
-    },
-    {
-      id: 4,
-      name: "Apple iPad (9th Generation)",
-      price: 33000000,
-      image: "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_UL320_.jpg",
-    },
-    {
-      id: 5,
-      name: "Samsung Galaxy Tab S7",
-      price: 4999000,
-      image: "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_UL320_.jpg",
-    },
-    {
-      id: 6,
-      name: "Microsoft Surface Pro 7",
-      price: 74999900,
-      image: "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_UL320_.jpg",
-    },
-    {
-      id: 7,
-      name: "Apple iPad (9th Generation)",
-      price: 33000000,
-      image: "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_UL320_.jpg",
-    },
-    {
-      id: 8,
-      name: "Samsung Galaxy Tab S7",
-      price: 4999000,
-      image: "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_UL320_.jpg",
-    },
-    {
-      id: 9,
-      name: "Microsoft Surface Pro 7",
-      price: 74999900,
-      image: "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_UL320_.jpg",
-    },
-  ];
+  const [wishlists, setWishlists] = useState<IWishlist[]>([]);
+
+  const getWishlistProducts = async () => {
+    try {
+      const url: string = process.env.NEXT_PUBLIC_API_URL + "/wishlist";
+	    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch wishlist items");
+      }
+      const data = await response.json();
+      setWishlists(data);
+    } catch (error) {
+      console.error("Error fetching wishlist items:", error);
+    }
+  }
 
   const formatPrice = (price: number) => {
     const thousands = Math.floor(price / 1000);
@@ -68,6 +59,10 @@ export default function Wishlist() {
     );
   };
 
+  useEffect(() => {
+    getWishlistProducts()
+  }, []);
+
   return (
     <div className="min-h-screen bg-base-100 p-8">
       <header className="mb-8">
@@ -75,25 +70,27 @@ export default function Wishlist() {
         <p className="text-gray-600">Items you&apos;ve saved for later.</p>
       </header>
       <main className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
-        {wishlistItems.map((item) => (
-          <div key={item.id} className="card bg-base-100 shadow-md">
+        {wishlists.map((wishlist) => {
+          const product = wishlist.product
+          return (
+          <div key={product._id.toString()} className="card bg-base-100 shadow-md">
             <figure>
               <img
-                src={item.image}
-                alt={item.name}
+                src={product.thumbnail}
+                alt={product.name}
                 className="w-full h-60 object-cover"
               />
             </figure>
             <div className="card-body">
-              <h2 className="card-title">{item.name}</h2>
-                {formatPrice(item.price)}
+              <h2 className="card-title">{product.name}</h2>
+                {formatPrice(product.price)}
               <div className="card-actions justify-start">
-                <Link className="btn btn-primary" href={`/products/${item.id}`}>Detail product</Link>
+                <Link className="btn btn-primary" href={`/products/${product._id}`}>Detail product</Link>
                 <button className="btn btn-error">Remove</button>
               </div>
             </div>
           </div>
-        ))}
+        )})}
       </main>
     </div>
   );

@@ -40,8 +40,7 @@ export default function ProductsContent() {
     try {
       setError(null);
       const url: string =
-        process.env.NEXT_PUBLIC_API_URL +
-        `/products?pageNumber=${page}&search=${encodeURIComponent(search)}`;
+        process.env.NEXT_PUBLIC_API_URL +`/products?pageNumber=${page}&search=${encodeURIComponent(search)}`;
       const resp = await fetch(url, {
         method: "GET",
         headers: {

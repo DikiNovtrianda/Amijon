@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb"
 import { getDB } from "../config/mongodb"
+import { getProductOnWIshlistAgg } from "../helpers/aggregation"
 
 interface IWishlist {
   userId: ObjectId
@@ -22,13 +23,13 @@ export default class WishlistModel {
 
   static async getWishlistByUserId(userId: ObjectId) {
     const collection = this.getCollection()
-    const wishlist = await collection.find({ userId }).toArray()
+    const wishlist = await collection.aggregate(getProductOnWIshlistAgg(userId)).toArray()
     return wishlist
   }
 
-  static async deleteUserWishlistById(userId: ObjectId, id: ObjectId) {
+  static async deleteUserWishlistByProductId(userId: ObjectId, productId: ObjectId) {
     const collection = this.getCollection()
-    const result = await collection.deleteOne({ userId, _id: id })
+    const result = await collection.deleteOne({ userId, productId })
     return result.deletedCount > 0 ? "Success delete wishlist" : "Failed to delete wishlist"
   }
 }
