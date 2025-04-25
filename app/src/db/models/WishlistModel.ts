@@ -19,4 +19,10 @@ export default class WishlistModel {
     await collection.insertOne(payload)
     return "Success create wishlist"
   }
+
+  static async getWishlistByUserId(userId: ObjectId) {
+    const collection = this.getCollection()
+    const wishlist = await collection.find({ userId }).toArray()
+    return wishlist
+  }
 }

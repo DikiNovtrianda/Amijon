@@ -1,53 +1,15 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react";
+import { Suspense } from "react";
 import "./globals.css";
-import Link from 'next/link'
-import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import SearchBar from "@/components/searchBar";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [search, setSearch] = useState<string>("");
-  const [debouncedSearch, setDebouncedSearch] = useState<string>(""); // State for the debounced search
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (search.trim()) {
-      router.push(`/products?search=${encodeURIComponent(search)}`);
-    } else {
-      router.push(`/products`);
-    }
-  }
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(search)
-    }, 1000)
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [search])
-
-  useEffect(() => {
-    if (debouncedSearch.trim()) {
-      router.push(`/products?search=${encodeURIComponent(debouncedSearch)}`)
-    } else {
-      router.push(`/products`)
-    }
-  }, [debouncedSearch, router])
-
-  useEffect(() => {
-    const query = searchParams.get("search") || ""
-    if (query) {
-      setSearch(query)
-    }
-  }, [searchParams])
-
   return (
     <html lang="en" data-theme="bumblebee">
       <body>
@@ -58,15 +20,9 @@ export default function RootLayout({
             </Link>
           </div>
           <div className="flex-4">
-            <form className="form-control" onSubmit={handleSearch}>
-              <input
-                type="text"
-                placeholder="Search Amijon"
-                className="input input-bordered w-full"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </form>
+            <Suspense fallback={<div>Loading search...</div>}>
+              <SearchBar />
+            </Suspense>
           </div>
           <div className="flex-1 ml-auto">
             <ul className="menu menu-horizontal px-1 w-full text-white">

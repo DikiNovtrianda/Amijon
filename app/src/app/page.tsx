@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb"
-import Image from "next/image"
 import Link from "next/link"
 
 interface IProduct {
@@ -93,7 +92,7 @@ export default async function Home() {
                           <Link key={product._id.toString()} href={`/products/${product.slug}`}>
                             <div className="card bg-base-100 shadow-md bg-white">
                               <figure>
-                                <Image
+                                <img
                                   src={product.thumbnail}
                                   alt={product.name}
                                   className="w-full h-30 object-contain"
@@ -134,7 +133,7 @@ export default async function Home() {
                   >
                     <figure className="bg-white">
                       <Link href={`/products/${product.slug}`}>
-                        <Image
+                        <img
                           src={product.thumbnail}
                           alt={product.name}
                           className="w-full h-80 object-cover"
