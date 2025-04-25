@@ -77,6 +77,11 @@ export default class ProductModel {
     ]).toArray()
   }
 
+  static async getProductsByTag(tag: string = "Elektronik"): Promise<IProduct[]> {
+    const products = this.getCollection()
+    return await products.find({ tags: tag }).limit(4).toArray()
+  }
+
   static async getProductBySlug(slug: string): Promise<IProduct | null> {
     const products = this.getCollection()
     return await products.findOne({ slug })
