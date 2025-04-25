@@ -3,6 +3,7 @@
 import { ObjectId } from "mongodb";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 interface IWishlist {
   userId: ObjectId
@@ -49,6 +50,36 @@ export default function Wishlist() {
     }
   }
 
+  const deleteWishlist = async (productId: string) => {
+    try {
+      const url: string = process.env.NEXT_PUBLIC_API_URL + "/wishlist";
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete wishlist item");
+      }
+      const result = await response.json();
+      getWishlistProducts()
+      Swal.fire({
+        title: "Success",
+        text: result.message,
+        icon: "success",
+      })
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        icon: "error",
+      })
+      console.error("Error deleting wishlist item:", error);      
+    }
+  }
+
+
   const formatPrice = (price: number) => {
     const thousands = Math.floor(price / 1000);
     const hundreds = price % 1000;
@@ -86,7 +117,7 @@ export default function Wishlist() {
                 {formatPrice(product.price)}
               <div className="card-actions justify-start">
                 <Link className="btn btn-primary" href={`/products/${product._id}`}>Detail product</Link>
-                <button className="btn btn-error">Remove</button>
+                <button className="btn btn-error" onClick={() => deleteWishlist(product._id.toString())}>Remove</button>
               </div>
             </div>
           </div>
