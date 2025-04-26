@@ -1,6 +1,7 @@
+import CustomError from "@/db/exceptions/CustomError"
 import WishlistModel from "@/db/models/WishlistModel"
 import { ObjectId } from "mongodb"
-import { NextRequest } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 interface IWishlist {
   userId: ObjectId
@@ -21,10 +22,15 @@ export async function POST(request: NextRequest) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     })
-    return Response.json({ message }, { status: 201 })
+    return NextResponse.json({ message }, { status: 201 })
   } catch (error) {
-    console.log(error);
-    return Response.json({ message: "ISE" }, { status: 500 });
+    if (error instanceof CustomError) {
+      return NextResponse.json(
+        { message: error.message },
+        { status: error.status }
+      )
+    }
+    return NextResponse.json({ message: "ISE" }, { status: 500 });
   }
 }
 

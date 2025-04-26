@@ -1,16 +1,36 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import "./globals.css";
 import Link from "next/link";
 import SearchBar from "@/components/searchBar";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
+      const [key, value] = cookie.split("=")
+      acc[key] = value
+      return acc
+    }, {} as Record<string, string>)
+
+    setIsLoggedIn(!!cookies["access_token"]);
+  }, [])
+
+  const handleLogout = () => {
+    document.cookie = "access_token=; Max-Age=0; path=/;"
+    setIsLoggedIn(false)
+    router.push("/login")
+  }
+
   return (
     <html lang="en" data-theme="bumblebee">
       <body>
@@ -34,7 +54,15 @@ export default function RootLayout({
                 <Link href="/wishlist">Wishlist</Link>
               </li>
               <li className="flex-1 items-center">
-                <Link href="/login">Log in</Link>
+                {isLoggedIn ? (
+                  <button onClick={handleLogout} className="text-white hover:underline">
+                    Log out
+                  </button>
+                ) : (
+                  <Link href="/login" className="text-white hover:underline">
+                    Log in
+                  </Link>
+                )}
               </li>
             </ul>
           </div>

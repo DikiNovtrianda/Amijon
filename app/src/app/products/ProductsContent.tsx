@@ -93,18 +93,17 @@ export default function ProductsContent() {
       if (resp.error) {
         Swal.fire({
           title: "Error",
+          text: resp.message,
           icon: "error",
         });
-        return;
+      } else {
+        Swal.fire({
+          title: "Wishlist added",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
       }
-      Swal.fire({
-        title: "Wishlist added",
-        icon: "success",
-        timer: 1500,
-        showConfirmButton: false,
-      });
-
-      // add wishlist
       setProducts((prevProducts) => {
         return prevProducts.map((product) => {
           if (product._id.toString() === productId) {

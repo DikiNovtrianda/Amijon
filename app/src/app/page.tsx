@@ -65,7 +65,6 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-base-100">
-      {/* Product Grid */}
       <div className="container mx-auto">
         <div 
           className="p-8"
@@ -80,7 +79,6 @@ export default async function Home() {
           }}
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-60">
-            {/* featured products */}
             {featuredProducts.map((products, index) => {
               return (
                 <div key={index} className="card bg-white shadow-md">
@@ -112,7 +110,6 @@ export default async function Home() {
             )}
           </div>
         </div>
-        {/* featured products */}
         <div className="card bg-white mt-6">
           <div className="card-body">
             <h2 className="card-title">Check out our products</h2>
@@ -163,13 +160,10 @@ export default async function Home() {
       </div>
       <div className="bg-neutral text-white mt-8">
         <div className="container mx-auto py-8">
-          {/* Footer Links */}
           <div className="my-15 text-center">
             <h1 className="text-2xl mb-5">About us</h1>
             <h2 className="text-xl">Although our business hasnt yet to finish, one constant is customers desire for wishlisting items. Today, Amijon shoppers can find what theyre looking for online. From wishlisting products to their devices to not creating and distributing things, we are always finding new ways to disappoint our customers.</h2>
           </div>
-
-          {/* Footer Bottom */}
           <div className="border-t border-gray-700 mt-8 pt-4">
             <div className="flex flex-col sm:flex-row justify-between items-center">
               <div className="text-sm">

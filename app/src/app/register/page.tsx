@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { actRegister } from "./action";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
-import { ZodError } from "zod";
 
 export interface IRegister {
   name: string;

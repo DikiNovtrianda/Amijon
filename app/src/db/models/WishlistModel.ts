@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb"
 import { getDB } from "../config/mongodb"
 import { getProductOnWIshlistAgg } from "../helpers/aggregation"
+import CustomError from "../exceptions/CustomError"
 
 interface IWishlist {
   userId: ObjectId
@@ -17,6 +18,14 @@ export default class WishlistModel {
 
   static async createWishlist(payload: IWishlist) {
     const collection = this.getCollection()
+    const existingWishlist = await collection.findOne(payload)
+    if (existingWishlist) {
+      throw new CustomError(
+        "Wishlist already exists",
+        400
+      )
+    }
+      
     await collection.insertOne(payload)
     return "Success create wishlist"
   }

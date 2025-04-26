@@ -84,15 +84,38 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <img
             src={product.thumbnail}
             alt={product.name}
-            className="object-contain mx-auto"
+            className="object-contain mx-auto border-3 md:order-1 border-gray-300 rounded-lg"
           />
+          <div className="flex flex-row gap-2 mb-8 mt-4 md:order-2 items-center overflow-x-auto scrollbar-hide">
+            {product.images.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={product.name}
+                className="object-contain h-30 mx-auto border-3 md:order-1 border-gray-300 rounded-lg"
+              />
+            ))}
+          </div>
         </div>
-        <div>
+        <div className="flex flex-col p-5 pt-8">
           <h1 className="text-2xl md:text-3xl font-medium text-gray-900 mb-2">
             {product.name}
           </h1>
           {formatPrice(product.price)}
           <p className="text-sm text-gray-800 mt-3 mb-6">{product.description}</p>
+          <div className="flex flex-col gap-2 items-center">
+            <h2 className="text-md font-semibold">Tags :</h2>
+            <div className="flex flex-wrap gap-2 mb-8">
+              {product.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="badge badge-primary text-sm rounded"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
           <WishlistButton product={product} />
         </div>
       </div>

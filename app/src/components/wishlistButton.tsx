@@ -32,12 +32,20 @@ export default function WishlistButton({ product }: { product: IProduct }) {
         });
         return;
       }
-      Swal.fire({
-        title: "Wishlist added",
-        icon: "success",
-        timer: 1500,
-        showConfirmButton: false,
-      });
+      if (resp.error) {
+        Swal.fire({
+          title: "Error",
+          text: resp.message,
+          icon: "error",
+        });
+      } else {
+        Swal.fire({
+          title: "Wishlist added",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
       router.push(window.location.pathname)
     } catch (error) {
       console.error("Error adding to wishlist:", error);
