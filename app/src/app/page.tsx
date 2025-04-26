@@ -162,7 +162,7 @@ export default async function Home() {
         <div className="container mx-auto py-8">
           <div className="my-15 text-center">
             <h1 className="text-2xl mb-5">About us</h1>
-            <h2 className="text-xl">Although our business hasnt yet to finish, one constant is customers desire for wishlisting items. Today, Amijon shoppers can find what theyre looking for online. From wishlisting products to their devices to not creating and distributing things, we are always finding new ways to disappoint our customers.</h2>
+            <h2 className="text-xl">This site was built to complete GC02 task. This site can be used to search for your favorite products and save the products you like into favorites.</h2>
           </div>
           <div className="border-t border-gray-700 mt-8 pt-4">
             <div className="flex flex-col sm:flex-row justify-between items-center">
