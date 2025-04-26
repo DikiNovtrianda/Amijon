@@ -32,6 +32,16 @@ export default class UserModel {
   static async registerUser(payload: IUser) : Promise<string> {
     userSchema.parse(payload)
     const users = this.getCollection()
+    const existingUser = await users.findOne({
+      $or: [{ username: payload.username }, { email: payload.email }],
+    });
+  
+    if (existingUser) {
+      throw new CustomError(
+        "Username or email already exists. Please use a different one.",
+        400
+      );
+    }
     await users.insertOne({
       ...payload,
       password: encryptPassword(payload.password),

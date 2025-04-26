@@ -32,10 +32,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100">
-      <div className="flex items-center justify-center w-full h-16 ">
-        <h1 className="text-3xl font-bold mb-4">Amijon</h1>
-      </div>
-      <div className="bg-white p-12 rounded shadow-md w-full max-w-sm">
+      <div className="bg-white p-12 rounded shadow-md w-full max-w-sm mt-20">
         <h1 className="text-2xl font-bold mb-4 text-gray-800">Sign-In</h1>
         <form className="flex flex-col gap-4" onSubmit={handleLogin}>
           <div>

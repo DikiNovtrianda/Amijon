@@ -2,6 +2,9 @@
 
 import React, { useState } from "react";
 import { actRegister } from "./action";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+import { ZodError } from "zod";
 
 export interface IRegister {
   name: string;
@@ -17,24 +20,34 @@ export default function Register() {
     password: "",
     username: ""
   });
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await actRegister(data);
-      if (response.error) {
-        console.error("Registration failed.");
-        return;
-      }
-      console.log(response.message);
-    } catch (error) {
-      console.error("Error:", error);
+    const response = await actRegister(data);
+    console.log("Registration response:", response);
+      
+    if (response.error) {
+      Swal.fire({
+        title: "Error",
+        text: response.message,
+        icon: "error",
+      });
+    } else {
+      Swal.fire({
+        title: "Success",
+        text: response.message,
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      router.push("/login");
     }
   }
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-12 rounded shadow-md w-full max-w-md">
+      <div className="bg-white p-12 rounded shadow-md w-full max-w-md mt-20">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Create account</h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
@@ -68,7 +81,7 @@ export default function Register() {
               Email
             </label>
             <input
-              type="email"
+              type="text"
               name="email"
               id="email"
               className="mt-1 p-2 border border-gray-300 rounded w-full"
