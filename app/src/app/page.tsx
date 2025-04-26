@@ -164,43 +164,9 @@ export default async function Home() {
       <div className="bg-neutral text-white mt-8">
         <div className="container mx-auto py-8">
           {/* Footer Links */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            <div>
-              <h3 className="font-bold mb-4">Get to Know Us</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:underline">About Us</a></li>
-                <li><a href="#" className="hover:underline">Careers</a></li>
-                <li><a href="#" className="hover:underline">Press Releases</a></li>
-                <li><a href="#" className="hover:underline">Amazon Science</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Make Money with Us</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:underline">Sell on Amazon</a></li>
-                <li><a href="#" className="hover:underline">Sell under Amazon Accelerator</a></li>
-                <li><a href="#" className="hover:underline">Amazon Global Selling</a></li>
-                <li><a href="#" className="hover:underline">Become an Affiliate</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Amazon Payment Products</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:underline">Amazon Business Card</a></li>
-                <li><a href="#" className="hover:underline">Shop with Points</a></li>
-                <li><a href="#" className="hover:underline">Reload Your Balance</a></li>
-                <li><a href="#" className="hover:underline">Amazon Currency Converter</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Let Us Help You</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:underline">Your Account</a></li>
-                <li><a href="#" className="hover:underline">Returns Centre</a></li>
-                <li><a href="#" className="hover:underline">100% Purchase Protection</a></li>
-                <li><a href="#" className="hover:underline">Help</a></li>
-              </ul>
-            </div>
+          <div className="my-15 text-center">
+            <h1 className="text-2xl mb-5">About us</h1>
+            <h2 className="text-xl">Although our business hasnt yet to finish, one constant is customers desire for wishlisting items. Today, Amijon shoppers can find what theyre looking for online. From wishlisting products to their devices to not creating and distributing things, we are always finding new ways to disappoint our customers.</h2>
           </div>
 
           {/* Footer Bottom */}
@@ -210,9 +176,7 @@ export default async function Home() {
                 © 2025, amijon.com, Inc. or its affiliates
               </div>
               <div className="flex space-x-4 mt-4 sm:mt-0">
-                <a href="#" className="hover:underline">Privacy Notice</a>
-                <a href="#" className="hover:underline">Conditions of Use</a>
-                <a href="#" className="hover:underline">Interest-Based Ads</a>
+                <p className="hover:underline">Diki Novtrianda</p>
               </div>
             </div>
           </div>

@@ -9,18 +9,18 @@ import Swal from "sweetalert2";
 import { actWishlist } from "./action";
 
 interface IProduct {
-  _id: ObjectId;
-  name: string;
-  slug: string;
-  description: string;
-  excerpt: string;
-  price: number;
-  tags: string[];
-  thumbnail: string;
-  images: string[];
-  createdAt: Date;
-  updatedAt: Date;
-  isWishlist: boolean;
+  _id: ObjectId
+  name: string
+  slug: string
+  description: string
+  excerpt: string
+  price: number
+  tags: string[]
+  thumbnail: string
+  images: string[]
+  createdAt: Date
+  updatedAt: Date
+  isWishlist: boolean
 }
 
 interface IResponse {
@@ -40,39 +40,38 @@ export default function ProductsContent() {
     try {
       setError(null);
       const url: string =
-        process.env.NEXT_PUBLIC_API_URL +`/products?pageNumber=${page}&search=${encodeURIComponent(search)}`;
+        process.env.NEXT_PUBLIC_API_URL +`/products?pageNumber=${page}&search=${encodeURIComponent(search)}`
       const resp = await fetch(url, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
       if (!resp.ok) {
-        setError("Failed to fetch products. Please try again later.");
-        setHasMore(false);
-        return;
+        setHasMore(false)
+        if (page === 1) {
+          setError("Failed to fetch products. Please try again later.")
+        }
+        return
       }
-      const data: IProduct[] = await resp.json();
+      const data: IProduct[] = await resp.json()
 
       if (data.length === 0) {
-        setHasMore(false);
+        setHasMore(false)
       } else {
         setProducts((prevProducts) => {
           const existingIds = new Set(
             prevProducts.map((product) => product._id.toString())
-          );
+          )
           const uniqueProducts = data.filter(
             (product) => !existingIds.has(product._id.toString())
-          );
-          return [...prevProducts, ...uniqueProducts];
-        });
+          )
+          return [...prevProducts, ...uniqueProducts]
+        })
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
-      setHasMore(false);
-      setError("Failed to fetch products. Please try again later.");
+      console.error("Error fetching products:", error)
+      setHasMore(false)
+      setError("Failed to fetch products. Please try again later.")
     }
-  };
+  }
 
   const formatPrice = (price: number) => {
     const thousands: number = Math.floor(price / 1000);
@@ -104,6 +103,8 @@ export default function ProductsContent() {
         timer: 1500,
         showConfirmButton: false,
       });
+
+      // add wishlist
       setProducts((prevProducts) => {
         return prevProducts.map((product) => {
           if (product._id.toString() === productId) {
@@ -154,27 +155,7 @@ export default function ProductsContent() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <aside className="w-full md:w-1/2 p-4">
-        <h2 className="text-lg font-bold mb-4">Categories</h2>
-        <ul className="menu rounded-box">
-          <li>
-            <a href="#" className="hover:bg-primary hover:text-white">
-              Category 1
-            </a>
-          </li>
-          <li>
-            <a href="#" className="hover:bg-primary hover:text-white">
-              Category 2
-            </a>
-          </li>
-          <li>
-            <a href="#" className="hover:bg-primary hover:text-white">
-              Category 3
-            </a>
-          </li>
-        </ul>
-      </aside>
+    <div className="flex flex-col md:flex-row mx-40">
       <main className="flex-grow p-8">
         <header className="mb-8">
           <h1 className="text-2xl font-bold">Product list</h1>
@@ -182,52 +163,52 @@ export default function ProductsContent() {
             Check each product page for other buying options.
           </p>
         </header>
-        <InfiniteScroll
-          dataLength={products.length}
-          next={fetchMoreData}
-          hasMore={hasMore}
-          loader={<h4 className="mt-5">Loading...</h4>}
-          endMessage={
-            <p className="text-center mt-5">No more products to show</p>
-          }
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {products.map((product) => (
-              <div
-                key={product._id.toString()}
-                className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300"
-              >
-                <figure className="bg-white">
-                  <Link href={`/products/${product.slug}`}>
-                    <img
-                      src={product.thumbnail}
-                      alt={product.name}
-                      className="w-full h-80 object-cover"
-                    />
-                  </Link>
-                </figure>
-                <div className="card-body">
-                  <Link
-                    href={`/products/${product.slug}`}
-                    className="hover:underline hover:text-warning"
-                  >
-                    <h2 className="card-title">{product.name}</h2>
-                  </Link>
-                  {formatPrice(product.price)}
-                  <div className="card-actions ">
-                    <Link
-                      className="btn btn-primary"
-                      href={`/products/${product.slug}`}
-                    >
-                      See product
+          <InfiniteScroll
+            dataLength={products.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={<h4 className="mt-5">Loading...</h4>}
+            endMessage={
+              <p className="text-center mt-5">No more products to show</p>
+            }
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              {products.map((product) => (
+                <div
+                  key={product._id.toString()}
+                  className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300"
+                >
+                  <figure className="bg-white">
+                    <Link href={`/products/${product.slug}`}>
+                      <img
+                        src={product.thumbnail}
+                        alt={product.name}
+                        className="w-full h-80 object-cover"
+                      />
                     </Link>
-                    {showWishlistButton(product)}
+                  </figure>
+                  <div className="card-body">
+                    <Link
+                      href={`/products/${product.slug}`}
+                      className="hover:underline hover:text-warning"
+                    >
+                      <h2 className="card-title">{product.name}</h2>
+                    </Link>
+                    {formatPrice(product.price)}
+                    <div className="card-actions ">
+                      <Link
+                        className="btn btn-primary"
+                        href={`/products/${product.slug}`}
+                      >
+                        See product
+                      </Link>
+                      {showWishlistButton(product)}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </InfiniteScroll>
+              ))}
+            </div>
+          </InfiniteScroll>
       </main>
     </div>
   );

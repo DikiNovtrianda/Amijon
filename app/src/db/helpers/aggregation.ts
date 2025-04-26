@@ -1,6 +1,25 @@
 import { ObjectId } from "mongodb";
 
-export const getWishlistOnProductAgg = (userId: string | ObjectId) => {
+export const getWishlistOnProductAggWithSlug = (slug: string) => {
+  return [
+    {
+      $match: {
+        slug
+      }
+    },
+    {
+      $lookup: {
+        from: 'wishlists',
+        localField: '_id',
+        foreignField: 'productId',
+        as: 'wishlist'
+      }
+    },
+    ...getWishlistOnProductAgg()
+  ]
+}
+
+export const getWishlistOnProductAggWithUId = (userId: string | ObjectId) => {
   return [
     {
       $lookup: {
@@ -17,6 +36,12 @@ export const getWishlistOnProductAgg = (userId: string | ObjectId) => {
         as: 'wishlist'
       }
     },
+    ...getWishlistOnProductAgg()
+  ]
+}
+
+export const getWishlistOnProductAgg = () => {
+  return [
     {
       $unwind: {
         path: '$wishlist',

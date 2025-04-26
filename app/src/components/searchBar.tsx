@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 export default function SearchBar() {
   const [search, setSearch] = useState<string>("");
   const [debouncedSearch, setDebouncedSearch] = useState<string>("");
+  const [isMounted, setIsMounted] = useState<boolean>(false); 
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -19,27 +20,30 @@ export default function SearchBar() {
   };
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 1000);
-    return () => {
-      clearTimeout(handler);
-    };
+    if (search.trim()) {
+      const handler = setTimeout(() => {
+        setDebouncedSearch(search);
+      }, 1000);
+      return () => {
+        clearTimeout(handler);
+      };
+    } else {
+      setDebouncedSearch("");
+    }
   }, [search]);
 
   useEffect(() => {
-    if (debouncedSearch.trim()) {
+    if (isMounted && debouncedSearch.trim()) {
       router.push(`/products?search=${encodeURIComponent(debouncedSearch)}`);
-    } else {
-      router.push(`/products`);
     }
-  }, [debouncedSearch, router]);
+  }, [debouncedSearch, router, isMounted]);
 
   useEffect(() => {
     const query = searchParams.get("search") || "";
     if (query) {
       setSearch(query);
     }
+    setIsMounted(true);
   }, [searchParams]);
 
   return (
