@@ -24,24 +24,31 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await actRegister(data);
-    console.log("Registration response:", response);
-      
-    if (response.error) {
+    try {
+      const response = await actRegister(data);
+      if (response.error) {
+        Swal.fire({
+          title: "Error",
+          text: response.message,
+          icon: "error",
+        });
+      } else {
+        Swal.fire({
+          title: "Success",
+          text: response.message,
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Error:", error)
       Swal.fire({
         title: "Error",
-        text: response.message,
+        text: "An error occurred while processing your request.",
         icon: "error",
-      });
-    } else {
-      Swal.fire({
-        title: "Success",
-        text: response.message,
-        icon: "success",
-        timer: 1500,
-        showConfirmButton: false,
-      });
-      router.push("/login");
+      })      
     }
   }
 

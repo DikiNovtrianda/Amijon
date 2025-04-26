@@ -53,10 +53,10 @@ export default class UserModel {
     const users = this.getCollection()
     const user = await users.findOne({ username: payload.username })
     if (!user) {
-      throw new CustomError("Invalid username", 401)
+      throw new CustomError("Invalid username or password", 401)
     }
     if (!comparePassword(payload.password, user.password)) {
-      throw new CustomError("Invalid password", 401)
+      throw new CustomError("Invalid username or password", 401)
     }
     const token: string = generateToken({_id : user._id, username : user.username})
     return token;

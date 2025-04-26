@@ -1,7 +1,6 @@
 import CustomError from "@/db/exceptions/CustomError";
 import UserModel from "@/db/models/UserModel";
-import { NextRequest } from "next/server";
-
+import { NextRequest, NextResponse } from "next/server";
 
 interface ILogin {
   username: string;
@@ -14,14 +13,14 @@ export async function POST(request: NextRequest) {
       const token: string = await UserModel.loginUser(body);
       console.log('pass');
       
-      return Response.json({ token }, { status: 200 });
+      return NextResponse.json({ token }, { status: 200 });
     } catch (err) {
       if (err instanceof CustomError) {
-        return Response.json(
+        return NextResponse.json(
           { message: err.message },
           { status: err.status }
         );
       }
-      return Response.json({ message: "ISE" }, { status: 500 });
+      return NextResponse.json({ message: "ISE" }, { status: 500 });
     }
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { actLogin } from "./action";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export interface ILogin {
   username: string;
@@ -20,13 +21,31 @@ export default function Login() {
     e.preventDefault();
     try {
       const response = await actLogin(data);
+      console.log(response);
+      
       if (response.error) {
-        console.error("Registration failed.");
-        return;
+        Swal.fire({
+          title: "Error",
+          text: response.message,
+          icon: "error",
+        });
+      } else {
+        Swal.fire({
+          title: "Success",
+          text: response.message,
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        router.push("/");
       }
-      router.push("/");
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error)
+      Swal.fire({
+        title: "Error",
+        text: "An error occurred while processing your request.",
+        icon: "error",
+      })     
     }
   }
 
