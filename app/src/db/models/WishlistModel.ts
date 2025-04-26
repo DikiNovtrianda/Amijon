@@ -18,14 +18,14 @@ export default class WishlistModel {
 
   static async createWishlist(payload: IWishlist) {
     const collection = this.getCollection()
-    const existingWishlist = await collection.findOne(payload)
+    const { userId, productId } = payload
+    const existingWishlist = await collection.findOne({ userId, productId })
     if (existingWishlist) {
       throw new CustomError(
         "Wishlist already exists",
         400
       )
     }
-      
     await collection.insertOne(payload)
     return "Success create wishlist"
   }

@@ -149,9 +149,9 @@ export default async function Home() {
                   </div>
                 </div>
               ))}
-              <Link href={`/products`} className="flex items-center">
-                <div className="card flex bg-base-100 shadow-md bg-base-100 flex-shrink-0 w-60 h-140 text-lg text-semibold items-center">
-                  <p>See more products</p>
+              <Link href={`/products`} className="flex">
+                <div className="card flex bg-base-100 shadow-md flex-shrink-0 w-80 h-140 text-lg font-semibold ">
+                  <p className="text-center hover:text-primary pt-58 text-xl">Click here to <br />see more products</p>
                 </div>
               </Link>
             </div>
