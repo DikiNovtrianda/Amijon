@@ -106,15 +106,19 @@ export default function Wishlist() {
           return (
           <div key={product._id.toString()} className="card bg-base-100 shadow-md">
             <figure>
-              <img
-                src={product.thumbnail}
-                alt={product.name}
-                className="w-full h-60 object-cover"
-              />
+              <Link href={`/products/${product.slug}`}>
+                <img
+                  src={product.thumbnail}
+                  alt={product.name}
+                  className="w-full h-60 object-cover"
+                />
+              </Link>
             </figure>
             <div className="card-body">
-              <h2 className="card-title">{product.name}</h2>
-                {formatPrice(product.price)}
+              <Link href={`/products/${product.slug}`}>
+                <h2 className="card-title hover:text-primary hover:underline">{product.name}</h2>
+              </Link>
+              {formatPrice(product.price)}
               <div className="card-actions justify-start">
                 <Link className="btn btn-primary" href={`/products/${product.slug}`}>Detail product</Link>
                 <button className="btn btn-error" onClick={() => deleteWishlist(product._id.toString())}>Remove</button>
