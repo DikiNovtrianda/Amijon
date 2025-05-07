@@ -24,6 +24,8 @@ export async function POST(request: NextRequest) {
     })
     return NextResponse.json({ message }, { status: 201 })
   } catch (error) {
+    console.log();
+    
     if (error instanceof CustomError) {
       return NextResponse.json(
         { message: error.message },
